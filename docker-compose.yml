@@ -1,0 +1,87 @@
+version: '2.3'
+
+volumes:
+  data-psql: {}
+
+networks:
+  net-opennms:
+
+services:
+
+  database:
+    image: postgres:10
+    container_name: postgres
+    hostname: database
+    mem_limit: 512m
+    mem_swappiness: 0
+    environment:
+      - TZ=Europe/Berlin
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - data-psql:/var/lib/postgresql/data
+    networks:
+      - net-opennms
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432"
+
+  horizon:
+    image: opennms/horizon-core-web:latest
+    container_name: horizon
+    hostname: horizon
+    init: true
+    mem_limit: 2g
+    mem_swappiness: 0
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - TZ=Europe/Berlin
+      - JAVA_OPTS=-XX:+UseParallelGC -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      - OPENNMS_DBNAME=opennms
+      - OPENNMS_DBUSER=opennms
+      - OPENNMS_DBPASS=opennms
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - net-opennms
+    volumes:
+      - ./etc-overlay:/opt/opennms-etc-overlay
+      - ./jetty-overlay:/opt/opennms-jetty-webinf-overlay
+    command: ["-s"]
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-I", "http://localhost:8980/opennms/login.jsp"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
+    ports:
+      - "8980:8980"
+      - "8101:8101"
+
+  freeradius:
+    image: no42org/freeradius:1.0
+    container_name: freeradius
+    hostname: freeradius
+    volumes:
+      - ./freeradius/dictionary.opennms:/etc/raddb/dictionary.opennms
+      - ./freeradius/dictionary:/etc/raddb/dictionary
+      - ./freeradius/clients.conf:/etc/raddb/clients.conf
+      - ./freeradius/users:/etc/raddb/users
+    command: ["-X", "-f"]
+    networks:
+      net-opennms:
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813"
+      - "18120:18120"
