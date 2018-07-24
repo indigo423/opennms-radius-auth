@@ -292,6 +292,181 @@
          <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response" />
          <parameter key="ds-name" value="radiusauth" />
       </service>
+      <service name="Web-App-Horizon-Admin" interval="30000" user-defined="true" status="on">
+         <parameter key="retry" value="1"/>
+         <parameter key="timeout" value="5000"/>
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response"/>
+         <parameter key="rrd-base-name" value="hznApp"/>
+         <parameter key="ds-name" value="hznAppTotal"/>
+         <parameter key="page-sequence">
+         <page-sequence>
+            <page path="/opennms/login.jsp"
+                    ds-name="hznLoginPage"
+                    port="8980"
+                    successMatch="Password" />
+            <page path="/opennms/j_spring_security_check"
+                    ds-name="hznLoginPost"
+                    port="8980"
+                    method="POST">
+                <parameter key="j_username" value="admin"/>
+                <parameter key="j_password" value="admin"/>
+            </page>
+            <page path="/opennms/index.jsp"
+                    ds-name="hznStartPage"
+                    port="8980"
+                    successMatch="Log Out" />
+            <page path="/opennms/event/index"
+                    ds-name="hznEventPage"
+                    port="8980" successMatch="Event Queries" />
+            <page path="/opennms/j_spring_security_logout"
+                    ds-name="hznLogout"
+                    port="8980"
+                    method="POST"
+                    response-range="300-399"
+                    locationMatch="/opennms" />
+            </page-sequence>
+         </parameter>
+      </service>
+      <service name="Web-App-Horizon-User1" interval="30000" user-defined="true" status="on">
+         <parameter key="retry" value="1"/>
+         <parameter key="timeout" value="5000"/>
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response"/>
+         <parameter key="rrd-base-name" value="hznApp"/>
+         <parameter key="ds-name" value="hznAppTotal"/>
+         <parameter key="page-sequence">
+         <page-sequence>
+            <page path="/opennms/login.jsp"
+                    ds-name="hznLoginPage"
+                    port="8980"
+                    successMatch="Password" />
+            <page path="/opennms/j_spring_security_check"
+                    ds-name="hznLoginPost"
+                    port="8980"
+                    method="POST">
+                <parameter key="j_username" value="user1"/>
+                <parameter key="j_password" value="u5er1p455"/>
+            </page>
+            <page path="/opennms/index.jsp"
+                    ds-name="hznStartPage"
+                    port="8980"
+                    successMatch="Log Out" />
+            <page path="/opennms/event/index"
+                    ds-name="hznEventPage"
+                    port="8980" successMatch="Event Queries" />
+            <page path="/opennms/j_spring_security_logout"
+                    ds-name="hznLogout"
+                    port="8980"
+                    method="POST"
+                    response-range="300-399"
+                    locationMatch="/opennms" />
+            </page-sequence>
+         </parameter>
+      </service>
+      <service name="Web-App-Horizon-User2" interval="30000" user-defined="true" status="on">
+         <parameter key="retry" value="1"/>
+         <parameter key="timeout" value="5000"/>
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response"/>
+         <parameter key="rrd-base-name" value="hznApp"/>
+         <parameter key="ds-name" value="hznAppTotal"/>
+         <parameter key="page-sequence">
+         <page-sequence>
+            <page path="/opennms/login.jsp"
+                    ds-name="hznLoginPage"
+                    port="8980"
+                    successMatch="Password" />
+            <page path="/opennms/j_spring_security_check"
+                    ds-name="hznLoginPost"
+                    port="8980"
+                    method="POST">
+                <parameter key="j_username" value="user2"/>
+                <parameter key="j_password" value="u5er2p455"/>
+            </page>
+            <page path="/opennms/index.jsp"
+                    ds-name="hznStartPage"
+                    port="8980"
+                    successMatch="Log Out" />
+            <page path="/opennms/event/index"
+                    ds-name="hznEventPage"
+                    port="8980" successMatch="Event Queries" />
+            <page path="/opennms/j_spring_security_logout"
+                    ds-name="hznLogout"
+                    port="8980"
+                    method="POST"
+                    response-range="300-399"
+                    locationMatch="/opennms" />
+            </page-sequence>
+         </parameter>
+      </service>
+      <service name="Web-App-Horizon-User3" interval="30000" user-defined="true" status="on">
+         <parameter key="retry" value="1"/>
+         <parameter key="timeout" value="5000"/>
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response"/>
+         <parameter key="rrd-base-name" value="hznApp"/>
+         <parameter key="ds-name" value="hznAppTotal"/>
+         <parameter key="page-sequence">
+         <page-sequence>
+            <page path="/opennms/login.jsp"
+                    ds-name="hznLoginPage"
+                    port="8980"
+                    successMatch="Password" />
+            <page path="/opennms/j_spring_security_check"
+                    ds-name="hznLoginPost"
+                    port="8980"
+                    method="POST">
+                <parameter key="j_username" value="user3"/>
+                <parameter key="j_password" value="u5er3p455"/>
+            </page>
+            <page path="/opennms/index.jsp"
+                    ds-name="hznStartPage"
+                    port="8980"
+                    successMatch="Log Out" />
+            <page path="/opennms/event/index"
+                    ds-name="hznEventPage"
+                    port="8980" successMatch="Event Queries" />
+            <page path="/opennms/j_spring_security_logout"
+                    ds-name="hznLogout"
+                    port="8980"
+                    method="POST"
+                    response-range="300-399"
+                    locationMatch="/opennms" />
+            </page-sequence>
+         </parameter>
+      </service>
+      <service name="Web-App-Horizon-User3-Fail" interval="30000" user-defined="true" status="on">
+         <parameter key="retry" value="1"/>
+         <parameter key="timeout" value="5000"/>
+         <parameter key="rrd-repository" value="/opt/opennms/share/rrd/response"/>
+         <parameter key="rrd-base-name" value="hznApp"/>
+         <parameter key="ds-name" value="hznAppTotal"/>
+         <parameter key="page-sequence">
+         <page-sequence>
+            <page path="/opennms/login.jsp"
+                    ds-name="hznLoginPage"
+                    port="8980"
+                    successMatch="Password" />
+            <page path="/opennms/j_spring_security_check"
+                    ds-name="hznLoginPost"
+                    port="8980"
+                    method="POST">
+                <parameter key="j_username" value="user2"/>
+                <parameter key="j_password" value="u5er3p455"/>
+            </page>
+            <page path="/opennms/index.jsp"
+                    ds-name="hznStartPage"
+                    port="8980"
+                    successMatch="Log Out" />
+            <page path="/opennms/event/index"
+                    ds-name="hznEventPage"
+                    port="8980" successMatch="Event Queries" />
+            <page path="/opennms/j_spring_security_logout"
+                    ds-name="hznLogout"
+                    port="8980"
+                    method="POST"
+                    response-range="300-399"
+                    locationMatch="/opennms" />
+            </page-sequence>
+         </parameter>
+      </service>
       <downtime begin="0" end="300000" interval="30000"/><!-- 30s, 0, 5m -->
       <downtime begin="300000" end="43200000" interval="300000"/><!-- 5m, 5m, 12h -->
       <downtime begin="43200000" end="432000000" interval="600000"/><!-- 10m, 12h, 5d -->
@@ -360,4 +535,9 @@
    <monitor service="VMware-ManagedEntity" class-name="org.opennms.netmgt.poller.monitors.VmwareMonitor"/>
    <monitor service="MS-RDP" class-name="org.opennms.netmgt.poller.monitors.TcpMonitor"/>
    <monitor service="Radius-Authentication" class-name="org.opennms.protocols.radius.monitor.RadiusAuthMonitor" />
+   <monitor service="Web-App-Horizon-Admin" class-name="org.opennms.netmgt.poller.monitors.PageSequenceMonitor"/>
+   <monitor service="Web-App-Horizon-User1" class-name="org.opennms.netmgt.poller.monitors.PageSequenceMonitor"/>
+   <monitor service="Web-App-Horizon-User2" class-name="org.opennms.netmgt.poller.monitors.PageSequenceMonitor"/>
+   <monitor service="Web-App-Horizon-User3" class-name="org.opennms.netmgt.poller.monitors.PageSequenceMonitor"/>
+   <monitor service="Web-App-Horizon-User3-Fail" class-name="org.opennms.netmgt.poller.monitors.PageSequenceMonitor"/>
 </poller-configuration>
